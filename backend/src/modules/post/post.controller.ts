@@ -6,10 +6,15 @@ import {
     Patch,
     Param,
     Delete,
+    Query,
+    Request,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
+import { Public } from '~/modules/auth/decorators/public.decorator';
+import { QueryPostDto } from './dto/query-post.dto';
+import { AccessTokenPayload } from '../auth/types/access-token-payload';
 
 @Controller('posts')
 export class PostController {
@@ -17,24 +22,37 @@ export class PostController {
 
     @Post()
     async create(@Body() createPostDto: CreatePostDto) {
-        const newPost = await this.postService.create(createPostDto);
+        await this.postService.create(createPostDto);
 
         return {
             message: `Post has been created successfully`,
-            result: newPost,
         };
     }
 
+    @Public()
     @Get()
-    async findAll() {
-        const posts = await this.postService.findAll();
-        return { result: posts };
+    async findAll(@Query() queryPostDto: QueryPostDto) {
+        const posts = await this.postService.findAll(queryPostDto);
+        return posts;
     }
 
+    @Get('me')
+    async findMyPosts(
+        @Request() req: { user: AccessTokenPayload },
+        @Query() queryPostDto: QueryPostDto,
+    ) {
+        const posts = await this.postService.findAll({
+            ...queryPostDto,
+            author: req.user.id,
+        });
+        return posts;
+    }
+
+    @Public()
     @Get(':id')
     async findOne(@Param('id') id: string) {
         const post = await this.postService.findById(id);
-        return { result: post };
+        return post;
     }
 
     @Patch(':id')
