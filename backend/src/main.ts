@@ -2,9 +2,12 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { BadRequestException, ValidationPipe } from '@nestjs/common';
+// import { JwtGuard } from './modules/auth/guards/jwt.guard';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
+
+    app.enableCors(); // ทำให้สามารถเรียกใช้ API จาก domain อื่นได้
 
     const configService = app.get(ConfigService);
 
@@ -26,5 +29,9 @@ async function bootstrap() {
     );
 
     await app.listen(configService.get('port'));
+
+    console.log(
+        `Application is running on: http://localhost:${configService.get('port')}`,
+    );
 }
 bootstrap();
