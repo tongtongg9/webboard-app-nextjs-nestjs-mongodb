@@ -10,7 +10,9 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { Public } from '../auth/decorators/public.decorator';
 
+@Public() // TODO: Remove this line
 @Controller('users')
 export class UserController {
     constructor(private readonly userService: UserService) {}
@@ -20,7 +22,7 @@ export class UserController {
         const newUser = await this.userService.create(createUserDto);
 
         return {
-            message: `User ${newUser.email} has been created successfully`,
+            message: `User ${newUser.username} has been created successfully`,
             result: newUser,
         };
     }

@@ -3,8 +3,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { User, UserDocument } from './schema/user.schema';
-import { omit } from 'lodash';
+import { UserDocument } from './schema/user.schema';
 
 @Injectable()
 export class UserService {
@@ -12,32 +11,24 @@ export class UserService {
         @InjectModel('User') private readonly userModel: Model<UserDocument>,
     ) {}
 
-    async create(
-        createUserDto: CreateUserDto,
-    ): Promise<Omit<User, 'password'>> {
-        const findExistingUser = await this.findByEmail(createUserDto.email);
+    async create(createUserDto: CreateUserDto): Promise<UserDocument> {
+        const findExistingUser = await this.findByUsername(
+            createUserDto.username,
+        );
 
         if (findExistingUser) {
             throw new NotFoundException('User already exists');
         }
-
         const createdUser = new this.userModel(createUserDto);
-        const newUser = await createdUser.save();
-        return omit(newUser.toObject({ versionKey: false }), ['password']);
+        return await createdUser.save();
     }
 
-    async findAll(): Promise<Omit<User, 'password'>[]> {
-        const users = await this.userModel
-            .find({}, { password: 0, __v: 0 })
-            .exec();
-
+    async findAll(): Promise<UserDocument[]> {
+        const users = await this.userModel.find({}, { __v: 0 }).exec();
         return users;
     }
-
-    async findById(id: string) {
-        const user = await this.userModel
-            .findById(id, { password: 0, __v: 0 })
-            .exec();
+    async findById(id: string): Promise<UserDocument> {
+        const user = await this.userModel.findById(id, { __v: 0 }).exec();
 
         if (!user) {
             throw new NotFoundException('User not found');
@@ -46,11 +37,8 @@ export class UserService {
         return user;
     }
 
-    async findByEmail(email: string) {
-        const user = await this.userModel
-            .findOne({ email }, { password: 0, __v: 0 })
-            .exec();
-
+    async findByUsername(username: string): Promise<UserDocument | null> {
+        const user = await this.userModel.findOne({ username }).exec();
         return user;
     }
 
