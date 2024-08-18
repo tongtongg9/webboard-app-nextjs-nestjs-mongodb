@@ -6,15 +6,19 @@ import {
     Patch,
     Param,
     Delete,
+    Query,
 } from '@nestjs/common';
 import { CommunityService } from './community.service';
 import { CreateCommunityDto } from './dto/create-community.dto';
 import { UpdateCommunityDto } from './dto/update-community.dto';
+import { Public } from '../auth/decorators/public.decorator';
+import { QueryCommunityDto } from './dto/query-community.dto';
 
 @Controller('community')
 export class CommunityController {
     constructor(private readonly communityService: CommunityService) {}
 
+    @Public()
     @Post()
     async create(@Body() createCommunityDto: CreateCommunityDto) {
         const newCommunity =
@@ -26,10 +30,11 @@ export class CommunityController {
         };
     }
 
+    @Public()
     @Get()
     async findAll() {
         const communities = await this.communityService.findAll();
-        return { result: communities };
+        return communities;
     }
 
     @Get(':id')

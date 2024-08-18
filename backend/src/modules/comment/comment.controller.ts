@@ -10,6 +10,7 @@ import {
 import { CommentService } from './comment.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
+import { Public } from '../auth/decorators/public.decorator';
 
 @Controller('comments')
 export class CommentController {
@@ -25,6 +26,7 @@ export class CommentController {
         };
     }
 
+    @Public()
     @Get()
     async findAll() {
         const comments = await this.commentService.findAll();
