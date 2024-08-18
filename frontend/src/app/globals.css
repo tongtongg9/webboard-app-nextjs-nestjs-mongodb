@@ -2,32 +2,118 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+@layer base {
+    :root {
+        --background: 0 0% 100%;
+        --foreground: 240 10% 3.9%;
+        --card: 0 0% 100%;
+        --card-foreground: 240 10% 3.9%;
+        --popover: 0 0% 100%;
+        --popover-foreground: 240 10% 3.9%;
+        --primary: 141 39% 47%;
+        --primary-100: 162 28% 88%;
+        --primary-300: 149 38% 27%;
+        --primary-500: 159 22% 18%;
+        --primary-foreground: 355.7 100% 97.3%;
+        --text: 0 0% 10%;
+        --text-foreground: 0 0% 100%;
+        --grey: 240 3.8% 46.1%;
+        --grey-100: 163 5% 75%;
+        --grey-300: 163 1% 58%;
+        --success: 141 39% 47%;
+        --secondary: 240 4.8% 95.9%;
+        --secondary-foreground: 240 5.9% 10%;
+        --muted: 240 4.8% 95.9%;
+        --muted-foreground: 240 3.8% 46.1%;
+        --accent: 240 4.8% 95.9%;
+        --accent-foreground: 240 5.9% 10%;
+        --destructive: 0 84.2% 60.2%;
+        --destructive-foreground: 0 0% 98%;
+        --border: 240 5.9% 90%;
+        --input: 240 5.9% 90%;
+        --ring: 159 22% 18%;
+        --radius: 0.75rem;
+        --chart-1: 12 76% 61%;
+        --chart-2: 173 58% 39%;
+        --chart-3: 197 37% 24%;
+        --chart-4: 43 74% 66%;
+        --chart-5: 27 87% 67%;
+    }
+
+    .default {
+        --background: hsl(0 0% 100%);
+        --foreground: hsl(240 10% 3.9%);
+        --card: hsl(0 0% 100%);
+        --card-foreground: hsl(240 10% 3.9%);
+        --popover: hsl(0 0% 100%);
+        --popover-foreground: hsl(240 10% 3.9%);
+        --primary: hsl(240 5.9% 10%);
+        --primary-foreground: hsl(0 0% 98%);
+        --secondary: hsl(240 4.8% 95.9%);
+        --secondary-foreground: hsl(240 5.9% 10%);
+        --muted: hsl(240 4.8% 95.9%);
+        --muted-foreground: hsl(240 3.8% 46.1%);
+        --accent: hsl(240 4.8% 95.9%);
+        --accent-foreground: hsl(240 5.9% 10%);
+        --destructive: hsl(0 84.2% 60.2%);
+        --destructive-foreground: hsl(0 0% 98%);
+        --border: hsl(240 5.9% 90%);
+        --input: hsl(240 5.9% 90%);
+        --ring: hsl(240 10% 3.9%);
+        --radius: 0.75rem;
+        --chart-1: hsl(12 76% 61%);
+        --chart-2: hsl(173 58% 39%);
+        --chart-3: hsl(197 37% 24%);
+        --chart-4: hsl(43 74% 66%);
+        --chart-5: hsl(27 87% 67%);
+    }
+
+    .brand {
+        --background: hsl(0 0% 100%);
+        --foreground: hsl(240 10% 3.9%);
+        --card: hsl(0 0% 100%);
+        --card-foreground: hsl(240 10% 3.9%);
+        --popover: hsl(0 0% 100%);
+        --popover-foreground: hsl(240 10% 3.9%);
+        --primary: hsla(141, 39%, 47%);
+        --primary-100: hsl(162, 28%, 88%);
+        --primary-300: hsl(149, 38%, 27%);
+        --primary-500: hsl(159, 22%, 18%);
+        --primary-foreground: hsl(355.7 100% 97.3%);
+        --text: hsl(0 0% 10%);
+        --text-foreground: hsl(0 0% 100%);
+        --grey: hsl(240 3.8% 46.1%);
+        --grey-100: hsl(163, 5%, 75%);
+        --grey-300: hsl(163, 1%, 58%);
+        --success: hsl(141, 39%, 47%);
+        --secondary: hsl(240 4.8% 95.9%);
+        --secondary-foreground: hsl(240 5.9% 10%);
+        --muted: hsl(240 4.8% 95.9%);
+        --muted-foreground: hsl(240 3.8% 46.1%);
+        --accent: hsl(240 4.8% 95.9%);
+        --accent-foreground: hsl(240 5.9% 10%);
+        --destructive: hsl(0 84.2% 60.2%);
+        --destructive-foreground: hsl(0 0% 98%);
+        --border: hsl(240 5.9% 90%);
+        --input: hsl(240 5.9% 90%);
+        --ring: hsl(159, 22%, 18%);
+        --radius: 0.75rem;
+        --chart-1: hsl(12 76% 61%);
+        --chart-2: hsl(173 58% 39%);
+        --chart-3: hsl(197 37% 24%);
+        --chart-4: hsl(43 74% 66%);
+        --chart-5: hsl(27 87% 67%);
+    }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
+@layer base {
+    * {
+        @apply border-border;
+    }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+    body {
+        @apply bg-background text-foreground;
+        max-width: 100dvw;
+        overflow-x: hidden;
+    }
 }
