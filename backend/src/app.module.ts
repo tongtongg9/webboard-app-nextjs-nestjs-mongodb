@@ -31,11 +31,11 @@ import configuration from './config/configuration';
         }),
 
         // modules
+        AuthModule,
         UserModule,
         PostModule,
         CommentModule,
         CommunityModule,
-        AuthModule,
     ],
     controllers: [AppController],
     providers: [AppService],
