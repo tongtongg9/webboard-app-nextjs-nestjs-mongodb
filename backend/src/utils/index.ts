@@ -1,4 +1,5 @@
 import { genSalt, hash, compare } from 'bcrypt';
+import { Types } from 'mongoose';
 
 /**
  *
@@ -24,3 +25,13 @@ export async function comparePassword(
 ): Promise<boolean> {
     return compare(password, hash);
 }
+
+/**
+ *
+ * @param id string
+ * @returns Types.ObjectId
+ * @description parse object id from string
+ * @example parseObjectId('612f7b3b7f7')
+ */
+export const parseObjectId = (id: string): Types.ObjectId =>
+    new Types.ObjectId(id);
