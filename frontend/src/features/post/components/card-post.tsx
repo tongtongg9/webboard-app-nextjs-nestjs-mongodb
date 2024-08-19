@@ -70,7 +70,12 @@ export default function CardPost({
                         textToHighlight={title}
                     />
                 </h4>
-                <p className={cn('line-clamp-2 text-base text-muted-foreground', isDetail && 'line-clamp-none')}>
+                <p
+                    className={cn(
+                        'text-base text-muted-foreground',
+                        isDetail || search ? 'line-clamp-none' : 'line-clamp-2 '
+                    )}
+                >
                     <Highlighter
                         highlightClassName="bg-gold-500"
                         searchWords={search.split(' ')}

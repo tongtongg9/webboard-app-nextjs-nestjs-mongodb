@@ -7,12 +7,14 @@ export default function Home() {
     return (
         <div className="py-6 w-full">
             <div className="space-y-6 px-4 md:px-6 w-full max-w-screen-lg container">
-                <div className="flex space-x-4 w-full">
+                <div className="flex md:flex-row flex-col gap-4 w-full">
                     <SearchPost />
 
-                    <FilterWithCommunity />
+                    <div className="inline-flex gap-2 ml-auto">
+                        <FilterWithCommunity />
 
-                    <CreatePost />
+                        <CreatePost />
+                    </div>
                 </div>
 
                 <FeedPost />
