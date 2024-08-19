@@ -23,23 +23,37 @@ export class PostService {
     }
 
     async findAll(queryPostDto: QueryPostDto): Promise<PostDocument[]> {
-        const community = parseObjectId(queryPostDto.community);
-        const author = parseObjectId(queryPostDto.author);
+        const { author, community, search } = queryPostDto;
 
-        const _match = Object.assign(
-            {},
-            !isEmpty(queryPostDto.community) && { community_id: community },
-            !isEmpty(queryPostDto.author) && { author_id: author },
-        );
+        const _match: any = {};
+        const _project: any = { __v: 0 };
+        const _sort: any = { createdAt: -1 }; // Default sort
+
+        // Add community filter
+        if (!isEmpty(community)) {
+            _match.community_id = parseObjectId(community);
+        }
+
+        // Add author filter
+        if (!isEmpty(author)) {
+            _match.author_id = parseObjectId(author);
+        }
+
+        // Add text search if searchTerm is provided
+        if (!isEmpty(search)) {
+            _match.$text = { $search: search };
+
+            _project.score = { $meta: 'textScore' }; // Include text score in projection
+
+            delete _sort.createdAt; // Remove default sort
+            _sort.score = { $meta: 'textScore' }; // Sort by text score
+        }
 
         const posts = await this.postModel
             .aggregate([
-                {
-                    $match: _match,
-                },
-                {
-                    $project: { __v: 0 },
-                },
+                { $match: _match },
+                { $project: _project },
+
                 // lookup author
                 {
                     $lookup: {
@@ -122,9 +136,7 @@ export class PostService {
                         total_comments: { $size: '$comments' },
                     },
                 },
-                {
-                    $sort: { createdAt: -1 },
-                },
+                { $sort: _sort },
             ])
             .exec();
 
